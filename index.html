@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>데이터 기반 보험 마케팅 시스템</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.7;
+            color: #1a1a1a;
+            background: #ffffff;
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 122, 255, 0.08);
+            z-index: 1000;
+            padding: 1.2rem 0;
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            list-style: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        nav a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        
+        nav a:hover {
+            color: #007AFF;
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #007AFF;
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            padding: 8rem 2rem 6rem;
+            background: linear-gradient(135deg, #f8fbff 0%, #ffffff 100%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(0, 122, 255, 0.06) 0%, transparent 70%);
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(5deg); }
+        }
+        
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            animation: fadeInUp 0.8s ease;
+        }
+        
+        .hero h1 span {
+            background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            color: #555;
+            margin-bottom: 3rem;
+            line-height: 1.8;
+            animation: fadeInUp 0.8s ease 0.2s backwards;
+        }
+        
+        /* Section Styles */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        section:nth-child(even) {
+            background: #fafbff;
+        }
+        
+        h2 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            text-align: center;
+            color: #1a1a1a;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #007AFF, #4CD964);
+            border-radius: 2px;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #007AFF;
+            margin-bottom: 1rem;
+        }
+        
+        /* Problem Section */
+        .problem-intro {
+            text-align: center;
+            font-size: 1.4rem;
+            color: #666;
+            margin-bottom: 4rem;
+            font-weight: 500;
+        }
+        
+        .pain-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+        
+        .pain-point {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 122, 255, 0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .pain-point:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0, 122, 255, 0.15);
+            border-color: #007AFF;
+        }
+        
+        .pain-point h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1.4rem;
+        }
+        
+        .pain-point p {
+            color: #555;
+            line-height: 1.8;
+            margin-top: 1rem;
+        }
+        
+        /* Solution Section */
+        .solution-intro {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 4rem;
+            font-weight: 500;
+            line-height: 1.8;
+        }
+        
+        .values {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+        
+        .value-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 2px solid #007AFF;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .value-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #007AFF, #4CD964);
+        }
+        
+        .value-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(0, 122, 255, 0.2);
+        }
+        
+        .value-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            color: #007AFF;
+        }
+        
+        .value-card p {
+            color: #555;
+            line-height: 1.8;
+        }
+        
+        /* Benefits Section */
+        .benefits {
+            display: grid;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+        
+        .benefit {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 2.5rem;
+            align-items: start;
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 24px rgba(76, 217, 100, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .benefit:hover {
+            box-shadow: 0 12px 40px rgba(76, 217, 100, 0.2);
+            transform: translateX(10px);
+        }
+        
+        .benefit-number {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #4CD964 0%, #34C759 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            font-size: 2rem;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+        
+        .benefit-content h3 {
+            color: #4CD964;
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+        }
+        
+        .benefit-content p {
+            color: #555;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+        
+        /* Trust Section */
+        .trust-intro {
+            text-align: center;
+            font-size: 1.4rem;
+            color: #333;
+            margin-bottom: 4rem;
+            font-weight: 500;
+        }
+        
+        .trust-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+        
+        .trust-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 122, 255, 0.12);
+            border-left: 6px solid #007AFF;
+        }
+        
+        .trust-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            color: #1a1a1a;
+        }
+        
+        .trust-card ul {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+        
+        .trust-card li {
+            padding: 0.8rem 0;
+            color: #555;
+            line-height: 1.8;
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .trust-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4CD964;
+            font-weight: 900;
+            font-size: 1.2rem;
+        }
+        
+        /* Pricing Section */
+        .pricing-card {
+            max-width: 700px;
+            margin: 3rem auto;
+            background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%);
+            padding: 4rem;
+            border-radius: 30px;
+            color: white;
+            box-shadow: 0 20px 60px rgba(0, 122, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pricing-card::before {
+            content: '🎁';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 150px;
+            opacity: 0.1;
+        }
+        
+        .pricing-card h3 {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .price {
+            text-align: center;
+            font-size: 4rem;
+            font-weight: 900;
+            margin: 2rem 0;
+        }
+        
+        .price-note {
+            text-align: center;
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+        
+        .pricing-features {
+            list-style: none;
+            margin: 2rem 0;
+        }
+        
+        .pricing-features li {
+            padding: 1rem 0;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            position: relative;
+            padding-left: 2.5rem;
+        }
+        
+        .pricing-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4CD964;
+            font-weight: 900;
+            font-size: 1.5rem;
+        }
+        
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            text-align: center;
+            padding: 6rem 2rem;
+        }
+        
+        .cta h2 {
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .cta h2::after {
+            background: linear-gradient(90deg, #007AFF, #4CD964);
+        }
+        
+        .cta p {
+            font-size: 1.4rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            line-height: 1.8;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%);
+            color: white;
+            box-shadow: 0 8px 24px rgba(0, 122, 255, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 36px rgba(0, 122, 255, 0.4);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #007AFF;
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 36px rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-cta {
+            background: linear-gradient(135deg, #4CD964 0%, #34C759 100%);
+            color: white;
+            font-size: 1.3rem;
+            padding: 1.5rem 4rem;
+            box-shadow: 0 12px 40px rgba(76, 217, 100, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .btn-cta:hover {
+            transform: translateY(-6px) scale(1.05);
+            box-shadow: 0 16px 50px rgba(76, 217, 100, 0.5);
+            animation: none;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 1rem;
+                font-size: 0.85rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .pain-points, .values, .trust-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .benefit {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="#problem">문제</a></li>
+            <li><a href="#solution">솔루션</a></li>
+            <li><a href="#benefits">혜택</a></li>
+            <li><a href="#trust">신뢰</a></li>
+            <li><a href="#pricing">가격</a></li>
+            <li><a href="#cta">신청</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>고립된 성장은 끝. <span>데이터가 만들어주는</span> 압도적인 성과</h1>
+            <p>대전 지역 젊은 설계사를 위한 특화 솔루션. 소비자 행동 데이터 기반 영업 접점 자동화 시스템으로 효율을 300% 높이세요.</p>
+            <a href="#cta" class="btn btn-primary">지금 시작하기</a>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section id="problem">
+        <h2>😟 왜 당신의 성장이 멈췄다고 느끼십니까?</h2>
+        <p class="problem-intro">대전 지역 신입/초보 보험설계사님들의 공통적인 Pain Point입니다</p>
+        
+        <div class="pain-points">
+            <div class="pain-point">
+                <h3>🔒 고립감과 성장 정체</h3>
+                <p>대형 GA의 압도적인 규모 속에 개인 네트워킹 및 잠재 고객 접근이 제한되어 고립감이 커집니다.</p>
+            </div>
+            
+            <div class="pain-point">
+                <h3>⏰ 비효율적인 영업</h3>
+                <p>체계적인 멘토링이나 협력 채널이 부재하여 전문 지식 공유가 어렵고, 주먹구구식 영업으로 노력 대비 성과가 낮습니다.</p>
+            </div>
+            
+            <div class="pain-point">
+                <h3>😰 미래 불안</h3>
+                <p>꾸준한 성장 로드맵과 차별화된 영업 전략이 없어, 이직을 고민하게 만드는 지속적인 성과 향상 어려움에 직면합니다.</p>
+            </div>
+        </div>
+        
+        <p style="text-align: center; font-size: 1.3rem; margin-top: 4rem; font-weight: 600; color: #007AFF;">
+            우리는 이 문제를 해결하기 위해, 당신의 분석력과 효율을 데이터 기반으로 극대화하는 시스템을 개발했습니다.
+        </p>
+    </section>
+
+    <!-- Solution Section -->
+    <section id="solution">
+        <h2>💡 차세대 영업 효율을 경험하세요</h2>
+        <p class="solution-intro">단순한 CRM 툴이 아닌, 지역 특화 소비자 행동 데이터를 분석하여<br>영업 생산성을 혁신하는 자동화된 마케팅/영업 지원 시스템</p>
+        
+        <div class="values">
+            <div class="value-card">
+                <h3>🎯 정밀 타겟팅 및 발굴</h3>
+                <p>대전 둔산권 20~30대 직장인의 소비/금융 습관 데이터 분석 기반으로 가장 효율적인 잠재 고객 접점을 예측합니다.</p>
+            </div>
+            
+            <div class="value-card">
+                <h3>🤖 자동화된 대화 엔진</h3>
+                <p>잠재 고객 유형별로 가장 설득력이 높은 영업 접점 맞춤형 챗봇 스크립트 5가지를 즉시 제공하여, 상담 준비 시간을 획기적으로 단축합니다.</p>
+            </div>
+            
+            <div class="value-card">
+                <h3>📊 본부 조직의 경쟁력 강화</h3>
+                <p>개인의 성장을 넘어, 팀 전체의 영업 지식과 데이터 분석 역량을 시스템으로 통합하여 조직 전체의 생산성을 극대화합니다.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="benefits">
+        <h2>📈 이 시스템을 통해 얻게 될 3가지 중요한 혜택</h2>
+        
+        <div class="benefits">
+            <div class="benefit">
+                <div class="benefit-number">1</div>
+                <div class="benefit-content">
+                    <h3>시간 절약 - 비효율적인 리서치 0%</h3>
+                    <p>분석된 맞춤형 스크립트를 사용하여 상담 진입 장벽을 낮추고, 고객 니즈 파악 시간을 대폭 줄여 상담 전환율을 높입니다.</p>
+                </div>
+            </div>
+            
+            <div class="benefit">
+                <div class="benefit-number">2</div>
+                <div class="benefit-content">
+                    <h3>네트워킹 - 고립감 해소 및 성장 가속</h3>
+                    <p>데이터를 공유하고 성공 경험을 쌓는 시스템 기반의 협력 채널이 구축되어, 동료들과 함께 시너지를 내며 빠르게 성장할 수 있습니다.</p>
+                </div>
+            </div>
+            
+            <div class="benefit">
+                <div class="benefit-number">3</div>
+                <div class="benefit-content">
+                    <h3>전문성 - 차별화된 컨설턴트로 도약</h3>
+                    <p>막연한 감이 아닌, 데이터 기반의 논리적 설명을 제공하여 고객에게 신뢰를 주며, 단순 설계사가 아닌 전문 금융 컨설턴트로 포지셔닝합니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Section -->
+    <section id="trust">
+        <h2>✅ 실행력 기반의 검증된 솔루션</h2>
+        <p class="trust-intro">단순 아이디어가 아닌, 이미 초기 단계의 실행 계획과 전문 협력 네트워크를 확보했습니다</p>
+        
+        <div class="trust-cards">
+            <div class="trust-card">
+                <h3>MVP 검증 준비 완료</h3>
+                <ul>
+                    <li>영업 접점 맞춤형 챗봇 스크립트 5가지를 웹페이지 형태로 구현</li>
+                    <li>메리츠화재 내 동료 설계사 5인 대상 초기 효율성 검증 진행</li>
+                    <li>실제 현장 데이터 기반의 지속적인 시스템 개선</li>
+                </ul>
+            </div>
+            
+            <div class="trust-card">
+                <h3>전문 협력 기관</h3>
+                <ul>
+                    <li><strong>지역 대학 (소비자학과/경영학과)</strong><br>최신 소비자 데이터 분석 기법 자문 및 전문 인력(인턴십) 연계</li>
+                    <li><strong>대전경제통상진흥원</strong><br>개발 시스템 고도화 및 지역 디지털 전환 지원 사업 참여를 통한 공신력 확보</li>
+                </ul>
+            </div>
+        </div>
+        
+        <p style="text-align: center; font-size: 1.2rem; margin-top: 3rem; color: #555; line-height: 1.8;">
+            이 시스템은 지역 기반의 전문성과 탄탄한 조직 네트워크를 결합하여<br>설계된 현실적인 솔루션입니다.
+        </p>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing">
+        <h2>🎁 파격적인 혜택을 누리고 성장을 함께하세요</h2>
+        
+        <div class="pricing-card">
+            <h3>초기 베타 테스터 특별 혜택</h3>
+            <div class="price">$0</div>
+            <div class="price-note">초기 3개월 완전 무료</div>
+            
+            <ul class="pricing-features">
+                <li>선착순 5인 한정 특별 조건</li>
+                <li>지역 특화 데이터 분석 기반 챗봇 스크립트 5종 제공</li>
+                <li>맞춤형 고객 발굴 가이드라인 제공</li>
+                <li>월 2회 온/오프라인 피드백 세션 참여</li>
+                <li>정식 라이선스 평생 50% 할인 혜택</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta" id="cta">
+        <h2>🏁 주저하지 마세요</h2>
+        <p>데이터 기반의 차별화된 성장이 바로 눈앞에 있습니다.<br>당신의 노력과 잠재력을 가장 효율적으로 성과로 바꾸어 줄 단 하나의 시스템입니다.</p>
+        
+        <div class="cta-buttons">
+            <a href="#" class="btn btn-cta">🔥 선착순 5인! 지금 바로 베타 테스터 신청하기</a>
+            <a href="#" class="btn btn-secondary">📞 시스템 도입 및 협력 관련 전문가 문의</a>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe sections for scroll animations
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            observer.observe(section);
+        });
+
+        // Active nav link on scroll
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const sections = document.querySelectorAll('section');
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // CTA button click handlers
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                if (this.textContent.includes('베타 테스터 신청')) {
+                    e.preventDefault();
+                    alert('베타 테스터 신청 페이지로 이동합니다.\n\n실제 구현 시 신청 폼이나 외부 링크로 연결됩니다.');
+                } else if (this.textContent.includes('전문가 문의')) {
+                    e.preventDefault();
+                    alert('전문가 문의 페이지로 이동합니다.\n\n실제 구현 시 문의 폼이나 연락처 정보로 연결됩니다.');
+                }
+            });
+        });
+
+        // Add parallax effect to hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            const hero = document.querySelector('.hero');
+            if (hero && scrolled < 800) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+                hero.style.opacity = 1 - (scrolled / 800);
+            }
+        });
+    </script>
+</body>
+</html>
